@@ -6,6 +6,7 @@
  * When ready, drop in an embedded Acuity widget or a form-handled booking page here.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { buildLink } from "../lib/links.astro";
 
 const description = "Book your Argentine Tango class in Hong Kong. Group classes, monthly packs and private lessons available.";
 const acuityUrl = "https://tangountitled.as.me/tangountitled";
@@ -44,7 +45,7 @@ const acuityUrl = "https://tangountitled.as.me/tangountitled";
             Weekly beginner, all-level and themed topics at our Sheung Wan
             studio. Walk in solo or with a friend — partners rotate.
           </p>
-          <a href="/classes">View class details →</a>
+          <a href={buildLink("/classes")}>View class details →</a>
         </article>
         <article class="info">
           <h2 class="serif">Monthly pack</h2>

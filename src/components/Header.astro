@@ -4,11 +4,14 @@
  * On the home hero: transparent over the dark hero (variant="transparent").
  * Otherwise: clean, light, with the wordmark and a booking CTA at the right edge.
  */
+import { buildLink } from "../lib/links.astro";
+
 const nav = [
-  { label: "Home",         href: "/" },
-  { label: "About",        href: "/about" },
-  { label: "Classes",      href: "/classes" },
-  { label: "Location",     href: "/location" },
+  { label: "Home",         href: buildLink("/") },
+  { label: "About",        href: buildLink("/about") },
+  { label: "Classes",      href: buildLink("/classes") },
+  { label: "Location",     href: buildLink("/location") },
+  { label: "Book",         href: buildLink("/book") },
 ];
 
 interface Props { variant?: "default" | "transparent"; }
@@ -20,7 +23,7 @@ const isActive = (href: string) =>
 ---
 <header class={`site-header variant-${variant}`}>
   <div class="container header-inner">
-    <a href="/" class="brand naked" aria-label="Tango Untitled home">
+    <a href={buildLink("/")} class="brand naked" aria-label="Tango Untitled home">
       <span class="brand-en">Tango Untitled</span>
       <span class="brand-zh">無 題 探 戈</span>
     </a>
@@ -34,7 +37,7 @@ const isActive = (href: string) =>
           </li>
         ))}
       </ul>
-      <a href="/book" class="btn book-btn">Book a Class</a>
+      <a href={buildLink("/book")} class="btn book-btn">Book a Class</a>
     </nav>
     <button class="menu-btn" aria-label="Open menu" id="menuBtn">
       <span></span><span></span><span></span>
@@ -45,7 +48,7 @@ const isActive = (href: string) =>
       {nav.map((n) => (
         <li><a href={n.href} class="naked">{n.label}</a></li>
       ))}
-      <li><a href="/book" class="btn" style="margin-top:1.5rem;display:inline-block">Book a Class</a></li>
+      <li><a href={buildLink("/book")} class="btn" style="margin-top:1.5rem;display:inline-block">Book a Class</a></li>
     </ul>
   </div>
 </header>

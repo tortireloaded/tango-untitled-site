@@ -1,0 +1,24 @@
+---
+/**
+ * Build a link that respects the runtime `base` config (e.g. `/tango-untitled-site`).
+ * - Pass `/about`         => `/tango-untitled-site/about`
+ * - Pass `/`              => `/tango-untitled-site/`
+ * - Pass `https://...`    => returned as-is
+ * - Pass `#section`       => `/tango-untitled-site#section`
+ *
+ * Note: `import.meta.env.BASE_URL` is broken in Astro 7.2 (returns `/` regardless
+ * of config). We resolve base from `process.env.ASTRO_BASE` directly. Falling back
+ * to `/` keeps the helper safe for root-domain deploys (e.g. Cloudflare Pages where
+ * `ASTRO_BASE` is unset).
+ */
+export function buildLink(path: string): string {
+  const base = (process.env.ASTRO_BASE ?? import.meta.env.BASE_URL ?? "/").replace(/\/$/, "");
+  if (/^(https?:)?\/\//i.test(path) || path.startsWith("mailto:") || path.startsWith("tel:")) {
+    return path;
+  }
+  if (path.startsWith("#")) return `${base}${path}`;
+  if (path === "/") return `${base}/`;
+  if (path.startsWith("/")) return `${base}${path}`;
+  return `${base}/${path}`;
+}
+---

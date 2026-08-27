@@ -8,6 +8,7 @@ import { Image } from "astro:assets";
 import classBeginner from "../assets/images/class-beginner.png";
 import classAlllevel from "../assets/images/class-alllevel.png";
 import classThemed from "../assets/images/class-themed.png";
+import { buildLink } from "../lib/links.astro";
 
 const description = "Three tiers of Argentine Tango classes in Sheung Wan, Hong Kong — beginner fundamentals, all-level refinement, and themed topics. Use BBTRIALCLASS for a HKD 100 discount on your first beginner class.";
 
@@ -84,7 +85,7 @@ const tiers = [
         <p>
           Use coupon code <code>BBTRIALCLASS</code> at checkout. Works for single-class and monthly pack bookings.
         </p>
-        <a href="/book" class="btn">Book a beginner class</a>
+        <a href={buildLink("/book")} class="btn">Book a beginner class</a>
       </div>
     </div>
   </section>
@@ -96,7 +97,7 @@ const tiers = [
         Book a single class or grab a monthly pack. Single drop-ins welcome;
         partners rotate, so come solo or with a friend.
       </p>
-      <a href="/book" class="btn ghost">Book a Class</a>
+      <a href={buildLink("/book")} class="btn ghost">Book a Class</a>
     </div>
   </section>
 </BaseLayout>

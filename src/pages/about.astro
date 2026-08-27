@@ -6,6 +6,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import eugeneCor from "../assets/images/eugene-cor.jpg";
 import milonga from "../assets/images/milonga.jpg";
+import { buildLink } from "../lib/links.astro";
 
 const description = "Tango Untitled is a teaching and performing collective in Hong Kong, founded on the belief that tango is an untitled canvas — open, evolving, and shaped by each dancer's voice within the embrace.";
 ---
@@ -81,7 +82,7 @@ const description = "Tango Untitled is a teaching and performing collective in H
             French May Festival, Le French May, and other collaborations with
             Hong Kong's cultural community.
           </p>
-          <a href="/classes" class="naked" style="border-bottom: 1px solid var(--line-strong);">
+          <a href={buildLink("/classes")} class="naked" style="border-bottom: 1px solid var(--line-strong);">
             Explore our classes →
           </a>
         </div>
@@ -100,7 +101,7 @@ const description = "Tango Untitled is a teaching and performing collective in H
         Whether you're starting or continuing, we invite you to develop your
         dance through practice, curiosity and your own voice within the embrace.
       </p>
-      <a href="/book" class="btn ghost">Book a Class</a>
+      <a href={buildLink("/book")} class="btn ghost">Book a Class</a>
     </div>
   </section>
 </BaseLayout>

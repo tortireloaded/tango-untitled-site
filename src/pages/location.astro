@@ -6,6 +6,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import location from "../assets/images/location.jpg";
+import { buildLink } from "../lib/links.astro";
 
 const description = "Argentine Tango group classes are held at 18/F, 361 Queen's Road Central, Sheung Wan, Hong Kong. Find us in the Nan Dao Commercial Building, two minutes from Sheung Wan MTR.";
 
@@ -87,7 +88,7 @@ const osmLink = "https://www.openstreetmap.org/?mlat=22.28518&mlon=114.15086#map
         Wear comfortable clothing you can move in. Smooth-soled shoes
         preferred. Partners rotate, so come solo or with a friend.
       </p>
-      <a href="/book" class="btn ghost">Book a Class</a>
+      <a href={buildLink("/book")} class="btn ghost">Book a Class</a>
     </div>
   </section>
 </BaseLayout>

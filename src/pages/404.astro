@@ -3,6 +3,7 @@
  * 404 — quiet, on-brand, with a path home.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { buildLink } from "../lib/links.astro";
 ---
 <BaseLayout title="Page Not Found" description="That page doesn't exist. Try one of these instead.">
   <section class="section">
@@ -11,8 +12,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <h1 class="serif">Untitled.</h1>
       <p class="lead">The page you're looking for doesn't exist — or hasn't been written yet.</p>
       <div class="actions">
-        <a href="/" class="btn">Return Home</a>
-        <a href="/classes" class="naked" style="margin-left: 1.5rem;">See classes →</a>
+        <a href={buildLink("/")} class="btn">Return Home</a>
+        <a href={buildLink("/classes")} class="naked" style="margin-left: 1.5rem;">See classes →</a>
       </div>
     </div>
   </section>

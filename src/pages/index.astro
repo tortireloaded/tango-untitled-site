@@ -10,6 +10,7 @@ import { Image } from "astro:assets";
 import homeCover from "../assets/images/home-cover.jpg";
 import hero3 from "../assets/images/hero-3.jpeg";
 import hero4 from "../assets/images/hero-4.jpeg";
+import { buildLink } from "../lib/links.astro";
 
 const description = "Argentine Tango teaching and performing collective in Hong Kong. Group classes, workshops, performances — discover a language of movement and connection.";
 
@@ -61,8 +62,8 @@ const reels = [
         Hong Kong.
       </p>
       <div class="hero-ctas">
-        <a href="/classes#beginner" class="btn ghost">Start with Beginners</a>
-        <a href="/classes" class="ghost-link">Explore Our Classes</a>
+        <a href={buildLink("/classes#beginner")} class="btn ghost">Start with Beginners</a>
+        <a href={buildLink("/classes")} class="ghost-link">Explore Our Classes</a>
       </div>
       <a href="#intro" class="scroll-cue" aria-label="Scroll to intro">↓</a>
     </div>
@@ -148,7 +149,7 @@ const reels = [
         We invite you to develop your dance through practice, curiosity and
         your own voice within the embrace.
       </p>
-      <a href="/book" class="btn">Book a Class</a>
+      <a href={buildLink("/book")} class="btn">Book a Class</a>
     </div>
   </section>
 </BaseLayout>
