@@ -1,0 +1,312 @@
+---
+/**
+ * ChatBubble — floating AI chat for Tango Untitled.
+ *
+ * Renders a small chat button fixed bottom-right. Click → opens a panel
+ * with a greeting (in 廣東話) and a text input. Submits messages to the
+ * Cloudflare Worker (PUBLIC_CHAT_API_URL env var) which proxies to the LLM.
+ *
+ * Multi-turn chat: history kept in component state (resets on reload).
+ * Reply language: mirrors the user's first message (handled server-side).
+ *
+ * Note: we compute the booking-link prefix inline (rather than via buildLink)
+ * because Astro inlines child-component HTML and our buildLink() helper
+ * from lib/links.astro isn't reliably re-resolved in inline contexts.
+ */
+const ASTRO_BASE = (process.env.ASTRO_BASE ?? import.meta.env.BASE_URL ?? "/").replace(/\/$/, "");
+const BOOK_URL = `${ASTRO_BASE}/book`;
+---
+<script>
+  const API_URL = import.meta.env.PUBLIC_CHAT_API_URL ?? "";
+
+  type Message = { role: "user" | "assistant"; content: string };
+
+  const greeting: Message = {
+    role: "assistant",
+    content:
+      "我係 Tango Untitled 嘅 AI 助手 瞓捩頸。🐸 我嘅興趣係保衛地球，同埋推廣探戈喺香港嘅蓬勃發展。好高興認識你。",
+  };
+
+  // Initial state — greeting shown when panel opens.
+  const initialMessages: Message[] = [greeting];
+
+  const $ = (sel: string, root: HTMLElement | Document = document) =>
+    root.querySelector(sel) as HTMLElement | null;
+
+  function initChat(root: HTMLElement) {
+    const btn = $(".tuncb-btn", root)!;
+    const panel = $(".tuncb-panel", root)!;
+    const closeBtn = $(".tuncb-close", root)!;
+    const list = $(".tuncb-messages", root)!;
+    const form = $(".tuncb-form", root)!;
+    const input = $(".tuncb-input", root)! as HTMLInputElement;
+
+    let messages: Message[] = [...initialMessages];
+    let open = false;
+    let busy = false;
+
+    // Render helpers
+    const escape = (s: string) =>
+      s.replace(/[&<>"']/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string),
+      );
+
+    function render() {
+      list.innerHTML = messages
+        .map((m) => `<div class="tuncb-msg tuncb-msg--${m.role}">${escape(m.content)}</div>`)
+        .join("");
+      list.scrollTop = list.scrollHeight;
+    }
+
+    async function send(text: string) {
+      if (busy || !text.trim()) return;
+      busy = true;
+
+      // Append user message immediately
+      messages.push({ role: "user", content: text.trim() });
+      render();
+
+      // Append a streaming placeholder
+      const placeholderId = `tuncb-stream-${Date.now()}`;
+      list.insertAdjacentHTML(
+        "beforeend",
+        `<div class="tuncb-msg tuncb-msg--assistant" id="${placeholderId}">…</div>`,
+      );
+      const placeholder = document.getElementById(placeholderId)!;
+      list.scrollTop = list.scrollHeight;
+
+      try {
+        const resp = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages }),
+        });
+        if (!resp.ok) {
+          placeholder.textContent = `Sorry — something went wrong (${resp.status}). Try again or email tango.untitled@gmail.com.`;
+          return;
+        }
+        const data = await resp.json();
+        const reply: string =
+          data?.content?.[0]?.text ??
+          data?.reply ??
+          data?.message ??
+          "(no reply)";
+        placeholder.textContent = reply;
+        messages.push({ role: "assistant", content: reply });
+      } catch (e) {
+        placeholder.textContent =
+          "I can't reach the chat service right now. Please email tango.untitled@gmail.com.";
+      } finally {
+        busy = false;
+        list.scrollTop = list.scrollHeight;
+      }
+    }
+
+    // Wire events
+    btn.addEventListener("click", () => {
+      open = !open;
+      panel.toggleAttribute("hidden", !open);
+      btn.setAttribute("aria-expanded", String(open));
+      if (open) {
+        render();
+        setTimeout(() => input.focus(), 100);
+      }
+    });
+    closeBtn.addEventListener("click", () => {
+      open = false;
+      panel.toggleAttribute("hidden", true);
+      btn.setAttribute("aria-expanded", "false");
+    });
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const v = input.value;
+      input.value = "";
+      send(v);
+    });
+  }
+
+  // Boot when DOM is ready (Astro renders this client-side as a script island)
+  document.querySelectorAll<HTMLElement>("[data-tuncb]").forEach(initChat);
+</script>
+
+<div class="tuncb" data-tuncb aria-live="polite">
+  <button class="tuncb-btn" type="button" aria-label="Open chat with Tango Untitled assistant" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+  </button>
+
+  <section class="tuncb-panel" hidden aria-label="Tango Untitled chat">
+    <header class="tuncb-header">
+      <div class="tuncb-header-text">
+        <strong>瞓捩頸</strong>
+        <span>Tango Untitled · AI assistant</span>
+      </div>
+      <button class="tuncb-close" type="button" aria-label="Close chat">×</button>
+    </header>
+    <div class="tuncb-messages" role="log"></div>
+    <form class="tuncb-form" autocomplete="off">
+      <input
+        class="tuncb-input"
+        type="text"
+        name="msg"
+        placeholder="問我嘢... Ask anything..."
+        aria-label="Type your message"
+        required
+      />
+      <button class="tuncb-send" type="submit">Send</button>
+    </form>
+    <footer class="tuncb-footer">
+      AI may be wrong — see <a href={BOOK_URL}>booking</a> for the latest schedule.
+    </footer>
+  </section>
+</div>
+
+<style>
+  .tuncb {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 9999;
+    font-family: var(--sans, system-ui, sans-serif);
+  }
+
+  /* Floating button */
+  .tuncb-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ink, #0e0e10);
+    color: var(--paper, #fafaf7);
+    border: 0;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,.25), 0 2px 6px rgba(0,0,0,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .tuncb-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.3); }
+  .tuncb-btn:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
+  /* Panel */
+  .tuncb-panel {
+    position: absolute;
+    right: 0;
+    bottom: 72px;
+    width: min(360px, calc(100vw - 2.5rem));
+    height: min(560px, calc(100vh - 8rem));
+    background: var(--paper, #fafaf7);
+    color: var(--ink, #0e0e10);
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.25), 0 4px 12px rgba(0,0,0,.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+  .tuncb[hidden], .tuncb-panel[hidden] { display: none; }
+
+  .tuncb-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .85rem 1rem;
+    background: var(--ink, #0e0e10);
+    color: var(--paper, #fafaf7);
+  }
+  .tuncb-header-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .tuncb-header-text strong { font-family: var(--serif, Georgia, serif); font-size: 1.05rem; }
+  .tuncb-header-text span { opacity: .65; font-size: .78rem; }
+  .tuncb-close {
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.6rem;
+    line-height: 1;
+    opacity: .8;
+    padding: 0 .25rem;
+  }
+  .tuncb-close:hover { opacity: 1; }
+
+  .tuncb-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    background: var(--paper-soft, #f5f5f5);
+  }
+  .tuncb-msg {
+    max-width: 84%;
+    padding: .6rem .8rem;
+    border-radius: 12px;
+    font-size: .92rem;
+    line-height: 1.45;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  .tuncb-msg--assistant {
+    align-self: flex-start;
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid rgba(0,0,0,.06);
+  }
+  .tuncb-msg--user {
+    align-self: flex-end;
+    background: var(--ink, #0e0e10);
+    color: var(--paper, #fafaf7);
+  }
+
+  .tuncb-form {
+    display: flex;
+    gap: .5rem;
+    padding: .6rem;
+    background: #fff;
+    border-top: 1px solid rgba(0,0,0,.06);
+  }
+  .tuncb-input {
+    flex: 1;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 8px;
+    padding: .55rem .7rem;
+    font: inherit;
+    font-size: .92rem;
+    background: #fff;
+    color: var(--ink);
+  }
+  .tuncb-input:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
+  .tuncb-send {
+    background: var(--ink, #0e0e10);
+    color: var(--paper, #fafaf7);
+    border: 0;
+    border-radius: 8px;
+    padding: 0 .9rem;
+    font: inherit;
+    font-size: .9rem;
+    cursor: pointer;
+  }
+  .tuncb-send:hover { opacity: .9; }
+
+  .tuncb-footer {
+    padding: .5rem 1rem;
+    font-size: .72rem;
+    color: rgba(0,0,0,.55);
+    text-align: center;
+    background: #fff;
+    border-top: 1px solid rgba(0,0,0,.04);
+  }
+  .tuncb-footer a { color: inherit; }
+
+  /* On small screens, full-bleed panel above keyboard */
+  @media (max-width: 480px) {
+    .tuncb-panel {
+      width: calc(100vw - 1.5rem);
+      height: min(70vh, 540px);
+      right: -.25rem;
+      bottom: 64px;
+    }
+  }
+</style>

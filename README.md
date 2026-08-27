@@ -1,10 +1,11 @@
 # Tango Untitled — Site
 
-Static rebuild of tangountitled.com. Astro 7, deploys to Cloudflare Pages.
+Static rebuild of tangountitled.com. Astro 7, deploys to GitHub Pages. Includes a custom AI chat bubble (cloud-hosted LLM via Cloudflare Worker).
 
-- **Live URL (when deployed):** https://tangountitled.com
+- **Live URL (when deployed):** https://tortireloaded.github.io/tango-untitled-site/
 - **Source:** https://github.com/tortireloaded/tango-untitled-site
-- **Stack:** Astro 7 + system fonts + WebP images. Zero JS by default.
+- **Stack:** Astro 7 + system fonts + WebP images + Cloudflare Worker chat proxy.
+- **Chatbot:** 瞓捩頸 (AI assistant for Tango Untitled) — see `chat-widget-worker/`
 
 ## Local development
 

@@ -1,0 +1,24 @@
+# Cloudflare Worker — Tango Untitled chat proxy
+#
+# Deploy:
+#   npm install
+#   npx wrangler secret put MINIMAX_API_KEY   # paste key when prompted
+#   npm run deploy
+#
+# After deploy, the worker publishes to a URL like:
+#   https://tango-untitled-chat.<your-subdomain>.workers.dev
+#
+# The static site calls this endpoint via fetch() from ChatBubble.astro.
+name = "tango-untitled-chat"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Optional env vars (use `wrangler secret put` for the API key):
+#   MINIMAX_API_KEY  - REQUIRED; set as Worker secret.
+#   MINIMAX_MODEL    - default in code: claude-sonnet-4-20250514
+#   MAX_TOKENS       - default in code: 1024
+#   CORS_ORIGIN      - default in code: https://tortireloaded.github.io
+[vars]
+MINIMAX_MODEL = "claude-sonnet-4-20250514"
+MAX_TOKENS = "1024"
+CORS_ORIGIN = "https://tortireloaded.github.io"
