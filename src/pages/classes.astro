@@ -1,0 +1,159 @@
+---
+/**
+ * Classes — three tiers of group classes in cards, with a coupon-callout and a CTA.
+ * Drop-down sub-pages existed on Squarespace but were all 404s; everything lives here.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import classBeginner from "../assets/images/class-beginner.png";
+import classAlllevel from "../assets/images/class-alllevel.png";
+import classThemed from "../assets/images/class-themed.png";
+
+const description = "Three tiers of Argentine Tango classes in Sheung Wan, Hong Kong — beginner fundamentals, all-level refinement, and themed topics. Use BBTRIALCLASS for a HKD 100 discount on your first beginner class.";
+
+const tiers = [
+  {
+    id: "beginner",
+    eyebrow: "#tango2026",
+    title: "Introduction to Tango",
+    subtitle: "Beginner",
+    body: "Learn the foundations of Argentine tango, including posture, leading and following techniques, the tango walk, fundamental movements, and the tango line of dance. Experience open and closed embraces.",
+    image: classBeginner,
+    alt: "Beginner Argentine tango class — Tango Untitled",
+  },
+  {
+    id: "all-level",
+    eyebrow: "#無間斷tango",
+    title: "Refining Basics",
+    subtitle: "All-Level Class",
+    body: "Focus on honing your basics, improving partner connection, working on tango figures, and dancing to the music. Learn navigation techniques for confidently moving on the dance floor.",
+    image: classAlllevel,
+    alt: "All-level tango class — Tango Untitled",
+  },
+  {
+    id: "themed",
+    eyebrow: "#無盡頭tango",
+    title: "Endless Exploration",
+    subtitle: "Themed Topic",
+    body: "Delve into specific tango themes such as footwork, movement structures, musicality, and tango styles. Expand your tango horizons and refine your skills in these specialised classes.",
+    image: classThemed,
+    alt: "Themed tango class — Tango Untitled",
+  },
+];
+---
+<BaseLayout title="Classes" description={description} ogImage="/og-classes.jpg">
+
+  <section class="section masthead">
+    <div class="container narrow">
+      <p class="eyebrow">What we teach</p>
+      <h1 class="serif">Our Classes</h1>
+      <p class="lead">
+        A three-tier progression for every level of dancer. Held weekly at our
+        Sheung Wan studio in the heart of Hong Kong's Central.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <div class="cards-grid">
+        {tiers.map((t) => (
+          <article class="class-card" id={t.id}>
+            <div class="class-card-image">
+              <Image src={t.image} alt={t.alt} loading="lazy" />
+            </div>
+            <div class="class-card-body">
+              <span class="tag">{t.eyebrow}</span>
+              <h2 class="serif">{t.title}</h2>
+              <p class="subtitle">{t.subtitle}</p>
+              <p>{t.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section coupon">
+    <div class="container narrow">
+      <div class="coupon-card">
+        <p class="eyebrow">New students</p>
+        <h2 class="serif">
+          HKD 100 off your first beginner class.
+        </h2>
+        <p>
+          Use coupon code <code>BBTRIALCLASS</code> at checkout. Works for single-class and monthly pack bookings.
+        </p>
+        <a href="/book" class="btn">Book a beginner class</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark center">
+    <div class="container narrow">
+      <h2 class="serif">Ready to begin?</h2>
+      <p style="margin: 0 auto 1.8rem; max-width: 40em; color: rgba(250,250,247,.7);">
+        Book a single class or grab a monthly pack. Single drop-ins welcome;
+        partners rotate, so come solo or with a friend.
+      </p>
+      <a href="/book" class="btn ghost">Book a Class</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .masthead { padding-top: 5rem; }
+  .lead { color: var(--muted); font-size: 1.18rem; max-width: 50ch; }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 920px) { .cards-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 580px) { .cards-grid { grid-template-columns: 1fr; } }
+
+  .class-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+  }
+  .class-card-image {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .class-card-image img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .6s var(--ease);
+  }
+  .class-card:hover .class-card-image img { transform: scale(1.04); }
+  .class-card-body { padding: 1.6rem 1.7rem 2rem; flex: 1; display: flex; flex-direction: column; }
+  .class-card-body h2 { font-size: 1.7rem; margin: 0.4rem 0 0.2rem; }
+  .class-card-body .subtitle {
+    color: var(--muted);
+    font-size: 0.88rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 1.2rem;
+  }
+  .class-card-body p { color: var(--ink-soft); }
+
+  .coupon-card {
+    border: 1px dashed var(--line-strong);
+    padding: 2.4rem 2rem;
+    text-align: center;
+  }
+  .coupon-card code {
+    font-family: ui-monospace, "SF Mono", monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.18rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.95em;
+    letter-spacing: 0.04em;
+  }
+
+  .coupon-card .btn { margin-top: 1rem; }
+</style>

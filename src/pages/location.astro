@@ -1,0 +1,143 @@
+---
+/**
+ * Location — the one place, the one address. Map embed via OpenStreetMap iframe
+ * (no Google Maps API key required — easier than recreating the legacy Google iframe).
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import location from "../assets/images/location.jpg";
+
+const description = "Argentine Tango group classes are held at 18/F, 361 Queen's Road Central, Sheung Wan, Hong Kong. Find us in the Nan Dao Commercial Building, two minutes from Sheung Wan MTR.";
+
+// OpenStreetMap embed centred on the address (lat/lon for 361 Queen's Road Central)
+// Coordinates from OpenStreetMap: approx 22.28518, 114.15086
+const osmEmbed = "https://www.openstreetmap.org/export/embed.html?bbox=114.147%2C22.2836%2C114.1537%2C22.2870&layer=mapnik&marker=22.28518%2C114.15086";
+const osmLink = "https://www.openstreetmap.org/?mlat=22.28518&mlon=114.15086#map=18/22.28518/114.15086";
+---
+<BaseLayout title="Location" description={description} ogImage="/og-location.jpg">
+
+  <section class="section masthead">
+    <div class="container narrow">
+      <p class="eyebrow">Where to find us</p>
+      <h1 class="serif">Studio Address</h1>
+      <p class="lead">Group classes and workshops take place at our Sheung Wan studio.</p>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <div class="grid cols-2 location-row">
+        <div class="location-info">
+          <p class="eyebrow">Sheung Wan (Group Class)</p>
+          <h2 class="serif">361 Queen's Road Central</h2>
+          <address>
+            18/F, 361 Queen's Road Central<br />
+            Nan Dao Commercial Building<br />
+            Sheung Wan, Hong Kong
+          </address>
+
+          <h3 class="transport-title">Getting here</h3>
+          <ul class="transport">
+            <li>
+              <strong>MTR:</strong> Sheung Wan Station, Exit C — 3 minute walk.
+            </li>
+            <li>
+              <strong>Bus:</strong> Routes 2, 10, 18, 26 stop at Queen's Road Central.
+            </li>
+            <li>
+              <strong>Tram:</strong> Catch the east-west line to Western Market stop.
+            </li>
+            <li>
+              <strong>From Central:</strong> 8-minute walk along Queen's Road Central.
+            </li>
+          </ul>
+
+          <a href={osmLink} target="_blank" rel="noopener" class="btn">
+            Open in maps
+          </a>
+        </div>
+
+        <div class="location-photo">
+          <Image src={location} alt="Tango Untitled group class — Sheung Wan studio" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="map-frame">
+        <iframe
+          src={osmEmbed}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Tango Untitled studio location map"
+        ></iframe>
+        <p class="map-caption">
+          <a href={osmLink} target="_blank" rel="noopener">View larger map</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark center">
+    <div class="container narrow">
+      <h2 class="serif">See you on the floor.</h2>
+      <p style="margin: 0 auto 1.8rem; max-width: 40em; color: rgba(250,250,247,.7);">
+        Wear comfortable clothing you can move in. Smooth-soled shoes
+        preferred. Partners rotate, so come solo or with a friend.
+      </p>
+      <a href="/book" class="btn ghost">Book a Class</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .masthead { padding-top: 5rem; }
+  .lead { color: var(--muted); font-size: 1.18rem; max-width: 50ch; }
+
+  .location-row { gap: 3.5rem; align-items: center; }
+  address {
+    font-style: normal;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 1rem 0 2.5rem;
+  }
+
+  .transport-title { font-size: 1.1rem; margin-bottom: 1rem; }
+  .transport {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    color: var(--ink-soft);
+  }
+  .transport strong { display: inline-block; min-width: 5.5em; color: var(--ink); }
+
+  .location-photo {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .location-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .map-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    position: relative;
+  }
+  .map-frame iframe { width: 100%; height: 100%; border: 0; }
+  .map-caption {
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+  }
+
+  @media (max-width: 800px) {
+    .location-row { grid-template-columns: 1fr; gap: 2rem; }
+    .location-photo { aspect-ratio: 4 / 3; }
+  }
+</style>

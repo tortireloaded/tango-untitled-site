@@ -1,0 +1,24 @@
+---
+/**
+ * 404 — quiet, on-brand, with a path home.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Page Not Found" description="That page doesn't exist. Try one of these instead.">
+  <section class="section">
+    <div class="container narrow center" style="padding: 6rem 0;">
+      <p class="eyebrow">404</p>
+      <h1 class="serif">Untitled.</h1>
+      <p class="lead">The page you're looking for doesn't exist — or hasn't been written yet.</p>
+      <div class="actions">
+        <a href="/" class="btn">Return Home</a>
+        <a href="/classes" class="naked" style="margin-left: 1.5rem;">See classes →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lead { color: var(--muted); max-width: 46ch; margin: 0 auto 2rem; }
+  .actions { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+</style>

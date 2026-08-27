@@ -1,0 +1,157 @@
+---
+/**
+ * Footer — minimal: signature, social links, nav, page anchors.
+ */
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="brand-block">
+        <div class="brand-mark">
+          <span class="en">Tango Untitled</span>
+          <span class="zh">無 題 探 戈</span>
+        </div>
+        <p class="motto">Argentine Tango · Teaching · Performance · Hong Kong</p>
+      </div>
+      <nav aria-label="Footer">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/classes">Classes</a></li>
+          <li><a href="/location">Location</a></li>
+          <li><a href="/book">Book a Class</a></li>
+        </ul>
+      </nav>
+      <div class="contact">
+        <h4>Reach us</h4>
+        <ul>
+          <li>
+            <a href="mailto:tango.untitled@gmail.com">
+              tango.untitled@gmail.com
+            </a>
+          </li>
+          <li class="address">
+            18/F, 361 Queen's Road Central<br />
+            Nan Dao Commercial Building<br />
+            Sheung Wan, Hong Kong
+          </li>
+        </ul>
+      </div>
+      <div class="socials">
+        <h4>Follow</h4>
+        <ul class="social-list">
+          <li>
+            <a href="https://instagram.com/tango.untitled" aria-label="Instagram" rel="me">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+              <span>Instagram</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://facebook.com/tango.untitled" aria-label="Facebook" rel="me">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span>Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/@tango.untitled" aria-label="YouTube" rel="me">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.04C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+              <span>YouTube</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>© {year} Tango Untitled · 無題探戈</p>
+      <p>Site by Jun Jun</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4.5rem 0 1.8rem;
+    margin-top: 4rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.4fr 1fr;
+    gap: 2.5rem;
+  }
+  @media (max-width: 800px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+  .site-footer h4 {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(250,250,247,.55);
+    margin: 0 0 1rem;
+  }
+  .brand-mark .en {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    display: block;
+  }
+  .brand-mark .zh {
+    font-size: 0.78rem;
+    letter-spacing: 0.4em;
+    opacity: 0.7;
+    display: block;
+    margin-top: 0.2rem;
+  }
+  .motto {
+    color: rgba(250,250,247,.55);
+    font-size: 0.92rem;
+    margin-top: 1.2rem;
+    max-width: none;
+  }
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .site-footer a {
+    color: rgba(250,250,247,0.85);
+    border: 0;
+    font-size: 0.95rem;
+    transition: color .15s var(--ease);
+  }
+  .site-footer a:hover { color: var(--paper); }
+  .address {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: rgba(250,250,247,.55);
+    margin-top: 0.5rem;
+  }
+  .social-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .social-list svg { opacity: 0.85; }
+  .footer-base {
+    margin-top: 3.2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(250,250,247,.12);
+    display: flex;
+    justify-content: space-between;
+    color: rgba(250,250,247,.45);
+    font-size: 0.85rem;
+  }
+  .footer-base p { margin: 0; max-width: none; }
+  @media (max-width: 600px) {
+    .footer-base { flex-direction: column; gap: 0.5rem; }
+  }
+</style>

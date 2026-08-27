@@ -1,0 +1,101 @@
+---
+/**
+ * BaseLayout — every page lives inside this.
+ * SSR head: title, description, OG/Twitter, canonical, theme color.
+ * Header: minimal, sticky, dark on home/hero pages (passed via `homeHero` prop), light elsewhere.
+ * Footer: minimal social + signature.
+ */
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  homeHero?: boolean;        // home page renders a full-bleed dark hero above this layout's content
+  ogImage?: string;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  homeHero = false,
+  ogImage = "/og-default.jpg",
+  bodyClass = "",
+} = Astro.props;
+
+const site = Astro.site?.toString() ?? "https://www.tangountitled.com";
+const canonical = new URL(Astro.url.pathname, site).toString();
+const ogImageAbs = new URL(ogImage, site).toString();
+const fullTitle = title === "Tango Untitled"
+  ? "Tango Untitled · 無題探戈 · Argentine Tango in Hong Kong"
+  : `${title} · Tango Untitled`;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0e0e10" />
+    <meta name="color-scheme" content="light" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicons/favicon.ico" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tango Untitled · 無題探戈" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:locale" content="en_HK" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+
+    <link rel="preconnect" href="https://images.squarespace-cdn.com" crossorigin />
+    <link rel="preconnect" href="https://www.instagram.com" crossorigin />
+    <link rel="preconnect" href="https://platform.instagram.com" crossorigin />
+
+    <!-- JSON-LD — Tango school -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "DanceSchool",
+        "name": "Tango Untitled · 無題探戈",
+        "alternateName": "Tango Untitled",
+        "url": "https://www.tangountitled.com",
+        "description": "Argentine Tango teaching and performing collective in Hong Kong.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "18/F, 361 Queen's Road Central, Nan Dao Commercial Building",
+          "addressLocality": "Sheung Wan",
+          "addressRegion": "Hong Kong",
+          "addressCountry": "HK",
+        },
+        "telephone": "",
+        "image": ogImageAbs,
+        "sameAs": [
+          "https://instagram.com/tango.untitled",
+          "http://facebook.com/tango.untitled",
+          "https://www.youtube.com/@tango.untitled",
+        ],
+      })}
+    />
+  </head>
+  <body class={bodyClass}>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <Header variant={homeHero ? "transparent" : "default"} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

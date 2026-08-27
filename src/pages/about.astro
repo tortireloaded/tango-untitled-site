@@ -1,0 +1,135 @@
+---
+/**
+ * About — narrative page: who we are, what drives us, our lineage.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import eugeneCor from "../assets/images/eugene-cor.jpg";
+import milonga from "../assets/images/milonga.jpg";
+
+const description = "Tango Untitled is a teaching and performing collective in Hong Kong, founded on the belief that tango is an untitled canvas — open, evolving, and shaped by each dancer's voice within the embrace.";
+---
+<BaseLayout title="About" description={description} ogImage="/og-about.jpg">
+
+  <!-- MASTHEAD -->
+  <section class="section masthead">
+    <div class="container narrow">
+      <p class="eyebrow">Tango Untitled · 無題探戈</p>
+      <h1 class="serif">An untitled canvas,<br /> shaped by your voice.</h1>
+      <p class="lead">
+        Tango Untitled is named for a belief we hold close: that tango is an
+        untitled canvas — open, evolving, and shaped by each dancer's voice
+        within the embrace.
+      </p>
+    </div>
+  </section>
+
+  <!-- TEACHER + STORY -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="grid cols-2 teacher-row">
+        <div class="teacher-image">
+          <Image src={eugeneCor} alt="Eugene and Cor — Tango Untitled" loading="lazy" />
+        </div>
+        <div class="teacher-text">
+          <p class="eyebrow">Our practice</p>
+          <h2 class="serif">Where attention becomes freedom.</h2>
+          <p>
+            In our classes, we focus on grounded technique, musical awareness,
+            and communication between partners. Our practice draws from the
+            traditions of social tango and from the stage experience we continue
+            to explore as performers.
+          </p>
+          <p>
+            We believe learning Argentine Tango begins with attention — to your
+            own body, your partner and the music. Freedom in improvisation grows
+            through patient practice, body awareness, and a willingness to
+            listen.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL / PHILOSOPHY -->
+  <section class="section">
+    <div class="container narrow center">
+      <blockquote class="pull" style="margin: 0 auto 1rem;">
+        Freedom in improvisation grows through patient practice, body
+        awareness, and a willingness to listen.
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- LINEAGE -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="grid cols-2 teacher-row reversed">
+        <div class="teacher-text">
+          <p class="eyebrow">Our lineage</p>
+          <h2 class="serif">Years of study in Hong Kong,<br /> Asia and Buenos Aires.</h2>
+          <p>
+            Our experience has been shaped by years of studying Argentine Tango
+            in Hong Kong and across Asia, together with an extended period of
+            training in Buenos Aires.
+          </p>
+          <p>
+            Members of Tango Untitled have represented China at the
+            <em>Mundial de Tango</em> in Buenos Aires and participated in
+            social, stage and ensemble competitions across Asia. We have also
+            presented Argentine Tango at cultural venues in Hong Kong — at the
+            French May Festival, Le French May, and other collaborations with
+            Hong Kong's cultural community.
+          </p>
+          <a href="/classes" class="naked" style="border-bottom: 1px solid var(--line-strong);">
+            Explore our classes →
+          </a>
+        </div>
+        <div class="teacher-image">
+          <Image src={milonga} alt="Tango Untitled at a milonga" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section dark center">
+    <div class="container narrow">
+      <h2 class="serif">Your tango is waiting.</h2>
+      <p style="margin: 0 auto 1.8rem; max-width: 40em; color: rgba(250,250,247,.7);">
+        Whether you're starting or continuing, we invite you to develop your
+        dance through practice, curiosity and your own voice within the embrace.
+      </p>
+      <a href="/book" class="btn ghost">Book a Class</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .masthead { padding-top: 5rem; }
+  .masthead .serif { font-size: clamp(2.4rem, 5vw, 4rem); }
+  .lead { font-size: 1.18rem; color: var(--muted); max-width: 50ch; }
+
+  .teacher-row {
+    align-items: center;
+    gap: 3.5rem;
+  }
+  .teacher-row.reversed { direction: rtl; }
+  .teacher-row.reversed > * { direction: ltr; }
+
+  .teacher-image {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .teacher-image img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  .teacher-text h2 { margin-top: 0.5rem; }
+
+  @media (max-width: 800px) {
+    .teacher-row, .teacher-row.reversed { direction: ltr; grid-template-columns: 1fr; gap: 2rem; }
+    .teacher-image { aspect-ratio: 4 / 3; }
+  }
+</style>

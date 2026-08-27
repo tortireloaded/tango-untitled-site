@@ -1,0 +1,101 @@
+---
+/**
+ * Book — placeholder page.
+ * Currently we link out to the existing Acuity scheduling page
+ * (https://tangountitled.as.me/tangountitled).
+ * When ready, drop in an embedded Acuity widget or a form-handled booking page here.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const description = "Book your Argentine Tango class in Hong Kong. Group classes, monthly packs and private lessons available.";
+const acuityUrl = "https://tangountitled.as.me/tangountitled";
+---
+<BaseLayout title="Book a Class" description={description} ogImage="/og-book.jpg">
+
+  <section class="section masthead">
+    <div class="container narrow center">
+      <p class="eyebrow">Booking</p>
+      <h1 class="serif">Book your class.</h1>
+      <p class="lead">
+        Choose your class, day and time. Single drop-ins and monthly packs
+        available. New students: use code <code>BBTRIALCLASS</code> for
+        HKD 100 off your first beginner class.
+      </p>
+      <p>
+        <a href={acuityUrl} target="_blank" rel="noopener" class="btn">
+          Open the booking calendar →
+        </a>
+      </p>
+      <p class="note">
+        The booking calendar opens in a new tab.
+        <br />
+        If you have questions, email
+        <a href="mailto:tango.untitled@gmail.com">tango.untitled@gmail.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <div class="grid cols-3">
+        <article class="info">
+          <h2 class="serif">Group classes</h2>
+          <p>
+            Weekly beginner, all-level and themed topics at our Sheung Wan
+            studio. Walk in solo or with a friend — partners rotate.
+          </p>
+          <a href="/classes">View class details →</a>
+        </article>
+        <article class="info">
+          <h2 class="serif">Monthly pack</h2>
+          <p>
+            Discounted multi-class pass for committed students.
+            Pack terms visible at booking.
+          </p>
+        </article>
+        <article class="info">
+          <h2 class="serif">Private lessons</h2>
+          <p>
+            One-on-one or couple coaching by arrangement — email to enquire.
+          </p>
+          <a href="mailto:tango.untitled@gmail.com">tango.untitled@gmail.com</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark center">
+    <div class="container narrow">
+      <h2 class="serif">New to Tango Untitled?</h2>
+      <p style="margin: 0 auto 1.8rem; max-width: 40em; color: rgba(250,250,247,.7);">
+        Start with our beginner class on Mondays. Book a single drop-in first
+        — see if the music moves you.
+      </p>
+      <a href={acuityUrl} target="_blank" rel="noopener" class="btn ghost">
+        See upcoming classes
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .masthead { padding-top: 5rem; }
+  .lead { color: var(--muted); font-size: 1.18rem; max-width: 56ch; margin: 0 auto 1.6rem; }
+  .note { color: var(--muted-soft); font-size: 0.92rem; max-width: 50ch; margin: 1.5rem auto 0; }
+  .note a { color: inherit; border-bottom-color: currentColor; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.18rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.92em;
+    letter-spacing: 0.04em;
+  }
+
+  .info { border-top: 1px solid var(--line); padding-top: 2rem; }
+  .info h2 { font-size: 1.5rem; margin-top: 0; }
+  .info p { color: var(--ink-soft); }
+  .info a { color: var(--ink); border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+</style>

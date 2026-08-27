@@ -1,0 +1,324 @@
+---
+/**
+ * Home — full-bleed dark hero, then light sections.
+ * Hero: editorial photography, italic Chinese subtitle, the canonical opening lines.
+ * Below: what-we-do cards (Classes / Workshops / Performance / Tango Journey),
+ *        a Quiet Quote, IG reel embed, a CTA panel.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import homeCover from "../assets/images/home-cover.jpg";
+import hero3 from "../assets/images/hero-3.jpeg";
+import hero4 from "../assets/images/hero-4.jpeg";
+
+const description = "Argentine Tango teaching and performing collective in Hong Kong. Group classes, workshops, performances — discover a language of movement and connection.";
+
+const offerings = [
+  {
+    eyebrow: "01",
+    title: "Classes & Practicas",
+    body: "Group classes for beginner to advanced dancers. Build strong fundamentals, refine your movement and deepen your connection through patient practice.",
+  },
+  {
+    eyebrow: "02",
+    title: "Workshops & Visiting Artists",
+    body: "We host workshops with visiting artists, bringing fresh perspectives and inspiration to Hong Kong's tango community.",
+  },
+  {
+    eyebrow: "03",
+    title: "Performance & Ensemble",
+    body: "Duo and group performances at cultural venues, festivals and events in Hong Kong and overseas — improvised social tango and choreographed stage work.",
+  },
+  {
+    eyebrow: "04",
+    title: "Your Tango Journey",
+    body: "Whether taking first steps or continuing your practice, we invite you to develop your dance through curiosity and your own voice within the embrace.",
+  },
+];
+
+const reels = [
+  { code: "DWlHY50gomi", caption: "Studio session · milonga" },
+  { code: "DUxWeNMgrG9", caption: "Workshop with visiting artists" },
+  { code: "DUr9T-zgoH7", caption: "Weekend practica · Sheung Wan" },
+  { code: "DVSs_UUCX0R", caption: "Performance · Hong Kong" },
+];
+---
+<BaseLayout title="Tango Untitled" description={description} homeHero={true} ogImage="/og-home.jpg">
+
+  <!-- HERO -->
+  <section class="hero">
+    <Image src={homeCover} alt="" class="hero-bg" loading="eager" fetchpriority="high" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content container">
+      <p class="zh-title">無 題 探 戈</p>
+      <h1 class="hero-title">
+        Discover <em>Argentine tango</em><br />
+        — a language of <em>movement</em> and <em>connection</em>.
+      </h1>
+      <p class="hero-sub">
+        Immerse yourself in its dance and music, through classes, workshops
+        and performances with <strong>Tango Untitled</strong>, right here in
+        Hong Kong.
+      </p>
+      <div class="hero-ctas">
+        <a href="/classes#beginner" class="btn ghost">Start with Beginners</a>
+        <a href="/classes" class="ghost-link">Explore Our Classes</a>
+      </div>
+      <a href="#intro" class="scroll-cue" aria-label="Scroll to intro">↓</a>
+    </div>
+  </section>
+
+  <!-- INTRO + WHAT WE DO -->
+  <section class="section" id="intro">
+    <div class="container narrow">
+      <p class="eyebrow">About the Studio</p>
+      <h2 class="serif">Learn, practise, and explore Argentine Tango.</h2>
+      <p>
+        <strong>Tango Untitled</strong> is a teaching and performing collective
+        based in Hong Kong. We offer classes and workshops with an emphasis on
+        clear fundamentals, musical understanding, and communication through the
+        embrace.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <p class="eyebrow">What we offer</p>
+      <div class="grid cards">
+        {offerings.map((o) => (
+          <article class="offering">
+            <span class="eyebrow-num">{o.eyebrow}</span>
+            <h3>{o.title}</h3>
+            <p>{o.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL / QUIET QUOTE -->
+  <section class="section dark quote-band">
+    <div class="container narrow center">
+      <Image src={hero3} alt="" class="quote-bg" loading="lazy" />
+      <div class="quote-overlay"></div>
+      <blockquote class="pull" style="margin: 0 auto;">
+        “Tango is an untitled canvas — open, evolving and shaped by each dancer's
+        voice within the embrace.”
+      </blockquote>
+      <p class="quote-attr">— How we named the studio</p>
+    </div>
+  </section>
+
+  <!-- VIDEO / IG REELS -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">From the Studio</p>
+      <h2 class="serif">Following the floor</h2>
+      <p class="text-muted" style="max-width: 50ch;">
+        A living archive of our work — practicas, performances, visiting
+        artists. Updated weekly. <a href="https://instagram.com/tango.untitled" rel="me">Follow on Instagram</a>.
+      </p>
+
+      <div class="reels">
+        {reels.map((r) => (
+          <figure class="reel">
+            <iframe
+              src={`https://www.instagram.com/reel/${r.code}/embed/`}
+              loading="lazy"
+              allowtransparency="true"
+              allowfullscreen="true"
+              frameborder="0"
+              scrolling="no"
+              title={`Instagram reel ${r.code}`}
+            ></iframe>
+            <figcaption class="text-muted">{r.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section-cta">
+    <div class="container narrow center">
+      <p class="eyebrow">Begin</p>
+      <h2 class="serif">Your tango is waiting to be shaped by you.</h2>
+      <p class="text-muted" style="margin: 0 auto 2rem; max-width: 50ch;">
+        We invite you to develop your dance through practice, curiosity and
+        your own voice within the embrace.
+      </p>
+      <a href="/book" class="btn">Book a Class</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* HERO ─ full-bleed dark */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    margin-top: -68px;        /* sit behind transparent header */
+    padding-top: 68px;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7) saturate(1.05);
+    z-index: 0;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%);
+    z-index: 1;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  .zh-title {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    letter-spacing: 0.5em;
+    margin: 0 0 1.5rem;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    line-height: 1.1;
+    margin: 0 0 1.8rem;
+    max-width: 18em;
+    color: var(--paper);
+  }
+  .hero-title em {
+    font-style: italic;
+    color: #f0e9d9;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    line-height: 1.6;
+    max-width: 38em;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 2.5rem;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .ghost-link {
+    color: var(--paper);
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    padding-bottom: 0.2rem;
+  }
+  .ghost-link:hover { border-bottom-color: var(--paper); }
+  .scroll-cue {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.6);
+    font-size: 1.4rem;
+    animation: bob 2.4s var(--ease) infinite;
+    border: 0;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* OFFERINGS */
+  .offering {
+    border-top: 1px solid var(--line);
+    padding-top: 2rem;
+  }
+  .offering .eyebrow-num {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    color: var(--muted-soft);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  .offering h3 { margin-top: 0; }
+
+  /* QUOTE BAND */
+  .quote-band { position: relative; overflow: hidden; padding: 6rem 0; }
+  .quote-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.18;
+    z-index: 0;
+  }
+  .quote-overlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 80%);
+    z-index: 1;
+  }
+  .quote-band .container { position: relative; z-index: 2; }
+  blockquote.pull {
+    border: 0;
+    font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+    font-style: italic;
+    line-height: 1.35;
+    padding: 0;
+    text-align: center;
+    max-width: 30em;
+    color: var(--paper);
+    text-shadow: 0 1px 24px rgba(0,0,0,0.6);
+  }
+  .quote-attr {
+    text-align: center;
+    color: rgba(250,250,247,.55);
+    font-size: 0.9rem;
+    margin-top: 1.5rem;
+  }
+
+  /* REELS */
+  .reels {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .reel {
+    margin: 0;
+  }
+  .reel iframe {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    border: 0;
+    background: var(--ink-soft);
+  }
+  .reel figcaption {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .section-soft { background: var(--paper-soft); }
+  .section-cta {
+    background: linear-gradient(135deg, #0e0e10 0%, #1c1c1f 100%);
+    color: var(--paper);
+  }
+  .section-cta .text-muted { color: rgba(250,250,247,0.6); }
+  .section-cta .btn {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+  }
+  .section-cta .btn:hover { background: transparent; color: var(--paper); border-color: var(--paper); }
+</style>
