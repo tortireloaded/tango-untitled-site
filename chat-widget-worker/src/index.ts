@@ -165,7 +165,7 @@ export default {
     // Call Minimax Anthropic-compatible endpoint
     let upstream: Response;
     try {
-      upstream = await fetch("https://api.MiniMax.com/anthropic/v1/messages", {
+      upstream = await fetch("https://api.minimax.io/anthropic/v1/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
