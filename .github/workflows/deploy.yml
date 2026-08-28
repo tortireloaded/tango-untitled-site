@@ -34,7 +34,11 @@ jobs:
         env:
           ASTRO_SITE: https://tortireloaded.github.io
           ASTRO_BASE: /tango-untitled-site
+          # Chat worker URL — set after first deploy by adding
+          # a repository variable named CHAT_API_URL in GitHub repo settings.
+          PUBLIC_CHAT_API_URL: ${{ vars.CHAT_API_URL || '' }}
         run: npm run build
+
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
