@@ -113,3 +113,4 @@ All images are scraped from the original Squarespace site
 (https://www.tangountitled.com). They live under `src/assets/images/`. The
 repo can rebuild from these. If you need to add new images, drop them in the
 same folder and reference via `import name from "../assets/images/foo.jpg"`.
+
