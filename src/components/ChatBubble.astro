@@ -66,11 +66,11 @@ const BOOK_URL = `${ASTRO_BASE}/book`;
       messages.push({ role: "user", content: text.trim() });
       render();
 
-      // Append a streaming placeholder
+      // Append a typing indicator while waiting for the reply
       const placeholderId = `tuncb-stream-${Date.now()}`;
       list.insertAdjacentHTML(
         "beforeend",
-        `<div class="tuncb-msg tuncb-msg--assistant" id="${placeholderId}">…</div>`,
+        `<div class="tuncb-msg tuncb-msg--assistant tuncb-typing" id="${placeholderId}" aria-label="Assistant is typing"><span class="tuncb-typing-dot"></span><span class="tuncb-typing-dot"></span><span class="tuncb-typing-dot"></span></div>`,
       );
       const placeholder = document.getElementById(placeholderId)!;
       list.scrollTop = list.scrollHeight;
@@ -92,10 +92,14 @@ const BOOK_URL = `${ASTRO_BASE}/book`;
           data?.message ??
           "(no reply)";
         placeholder.textContent = reply;
+        placeholder.classList.remove("tuncb-typing");
+        placeholder.removeAttribute("aria-label");
         messages.push({ role: "assistant", content: reply });
       } catch (e) {
         placeholder.textContent =
           "I can't reach the chat service right now. Please email tango.untitled@gmail.com.";
+        placeholder.classList.remove("tuncb-typing");
+        placeholder.removeAttribute("aria-label");
       } finally {
         busy = false;
         list.scrollTop = list.scrollHeight;
@@ -280,6 +284,31 @@ const BOOK_URL = `${ASTRO_BASE}/book`;
     color: rgba(255,255,255,.55);
     margin-bottom: .25rem;
     letter-spacing: .04em;
+  }
+
+  /* Typing indicator — three animated dots */
+  .tuncb-typing {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 5px;
+    padding: .75rem 1rem !important;
+    min-height: 36px;
+  }
+  .tuncb-typing-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.35);
+    animation: tuncb-bounce 1.2s var(--ease, ease-in-out) infinite;
+  }
+  .tuncb-typing-dot:nth-child(2) { animation-delay: .15s; }
+  .tuncb-typing-dot:nth-child(3) { animation-delay: .30s; }
+  @keyframes tuncb-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: .35; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tuncb-typing-dot { animation: none; opacity: .55; }
   }
 
   .tuncb-form {
